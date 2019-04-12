@@ -34,3 +34,12 @@ pgray = '#64666B'
 # Fisher's iris data
 iris = pd.read_csv('https://gist.githubusercontent.com/curran/a08a1080b88344b0c8a7/raw/d546eaee765268bf2f487608c537c05e22e4b221/iris.csv')
 iris.head()
+
+setosa = iris[iris['species']=='setosa']
+versicolor = iris[iris['species']=='versicolor']
+virginica = iris[iris['species']=='virginica']
+
+
+plt.plot(np.unique(setosa['sepal_length']), np.poly1d(np.polyfit(setosa['sepal_length'], setosa['petal_length'], 1))(np.unique(setosa['sepal_length'])))
+plt.scatter(setosa['sepal_length'], setosa['petal_length'])
+plt.show()
