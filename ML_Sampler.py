@@ -14,6 +14,10 @@ import seaborn as sns
 import os
 import numpy as np 
 import scipy.stats as stats
+from sklearn import linear_model
+import statsmodels.api as sm
+from sklearn.feature_selection import RFE
+from sklearn.linear_model import LogisticRegression
 
 # set working directory
 os.chdir("/Users/Lauren/Documents/Python/Iris")
@@ -39,7 +43,53 @@ setosa = iris[iris['species']=='setosa']
 versicolor = iris[iris['species']=='versicolor']
 virginica = iris[iris['species']=='virginica']
 
+##############  Reconfigure Data  ##############
 
-plt.plot(np.unique(setosa['sepal_length']), np.poly1d(np.polyfit(setosa['sepal_length'], setosa['petal_length'], 1))(np.unique(setosa['sepal_length'])))
-plt.scatter(setosa['sepal_length'], setosa['petal_length'])
-plt.show()
+# add dummy variables for species
+dummies = pd.get_dummies(iris.species)
+dummies.head()
+iris = iris.join(dummies)
+
+
+##############  Visualize Data  ##############
+# bee swarm plots
+def beeswarm(var, label):
+    sns.swarmplot(x='species', y=var, data=iris) 
+    plt.xlabel('Species')
+    plt.ylabel(label)
+    plt.show()
+
+beeswarm('sepal_length', 'Sepal Length')
+beeswarm('sepal_width', 'Sepal Width')
+beeswarm('petal_length', 'Petal Length')
+beeswarm('petal_width', 'Petal Width')
+
+##############  Linear Regression  ##############
+# predict sepal length
+X=iris[['setosa','versicolor','sepal_width','petal_length','petal_width']] #dropping virginica as reference group
+y= iris['sepal_length']
+
+####  Using sklearn
+lm=linear_model.LinearRegression()
+model = lm.fit(X,y)
+
+predictions = lm.predict(X)
+predictions[0:5]
+
+# R-squared
+lm.score(X,y)
+
+# intercept
+lm.intercept_
+
+# coefficients
+lm.coef_
+
+####  Using statsmodels
+X = sm.add_constant(X) # add intercept (beta_0) to model
+model = sm.OLS(y, X).fit()
+predictions = model.predict(X)
+predictions[0:5]
+
+# output model stats
+model.summary()
