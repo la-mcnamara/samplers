@@ -93,3 +93,18 @@ predictions[0:5]
 
 # output model stats
 model.summary()
+
+##############  Logistic Regression with feature selection  ##############
+X=iris[['sepal_length','sepal_width','petal_length','petal_width']] #dropping virginica as reference group
+y= iris['virginica']
+
+# use sklearn rfe to select top 3 features
+model = LogisticRegression()
+rfe = RFE(model, 3)
+fit = rfe.fit(X, y)
+
+# output
+print("Num Features: %s" % (fit.n_features_))
+print("Selected Features: %s" % (fit.support_))
+print("Feature Ranking: %s" % (fit.ranking_))
+# sepal width is not selected
