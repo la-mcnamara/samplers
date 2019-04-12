@@ -6,6 +6,7 @@
 #  Purpose: Quick reference for some ML techniques      #
 #########################################################
 
+
 ##############  Setup  ##############
 # import packages
 import pandas as pd
@@ -34,6 +35,7 @@ porange = '#ff6e54'
 pyellow = '#ffa600'
 pgray = '#64666B'
 
+
 ##############  Get Data  ##############
 # Fisher's iris data
 iris = pd.read_csv('https://gist.githubusercontent.com/curran/a08a1080b88344b0c8a7/raw/d546eaee765268bf2f487608c537c05e22e4b221/iris.csv')
@@ -42,6 +44,7 @@ iris.head()
 setosa = iris[iris['species']=='setosa']
 versicolor = iris[iris['species']=='versicolor']
 virginica = iris[iris['species']=='virginica']
+
 
 ##############  Reconfigure Data  ##############
 
@@ -64,9 +67,10 @@ beeswarm('sepal_width', 'Sepal Width')
 beeswarm('petal_length', 'Petal Length')
 beeswarm('petal_width', 'Petal Width')
 
+
 ##############  Linear Regression  ##############
 # predict sepal length
-X=iris[['setosa','versicolor','sepal_width','petal_length','petal_width']] #dropping virginica as reference group
+X=iris[['setosa','versicolor','sepal_width','petal_length','petal_width']] # dropping virginica as reference group
 y= iris['sepal_length']
 
 ####  Using sklearn
@@ -94,9 +98,10 @@ predictions[0:5]
 # output model stats
 model.summary()
 
+
 ##############  Logistic Regression with feature selection  ##############
-X=iris[['sepal_length','sepal_width','petal_length','petal_width']] #dropping virginica as reference group
-y= iris['virginica']
+X=iris[['sepal_length','sepal_width','petal_length','petal_width']] # dropping species
+y= iris['virginica'] # predict vriginica
 
 # use sklearn rfe to select top 3 features
 model = LogisticRegression()
