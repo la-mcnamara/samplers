@@ -51,7 +51,6 @@ virginica = iris[iris['species']=='virginica']
 
 # add dummy variables for species
 dummies = pd.get_dummies(iris.species)
-dummies.head()
 iris = iris.join(dummies)
 
 
