@@ -19,6 +19,7 @@ from sklearn import linear_model
 import statsmodels.api as sm
 from sklearn.feature_selection import RFE
 from sklearn.linear_model import LogisticRegression
+from sklearn import metrics
 
 # set working directory
 os.chdir("/Users/Lauren/Documents/Python/Iris")
@@ -113,3 +114,23 @@ print("Num Features: %s" % (fit.n_features_))
 print("Selected Features: %s" % (fit.support_))
 print("Feature Ranking: %s" % (fit.ranking_))
 # sepal width is not selected
+
+
+#### fit final model
+X2 = X.loc[:, fit.support_.tolist()]
+finalmod = model.fit(X2,y)
+finalmod.intercept_
+finalmod.coef_
+
+# prediction
+finalmod.score(X2,y)
+logpred = finalmod.predict(X2)
+
+# auc
+metrics.roc_auc_score(y, logpred)
+
+# precision
+metrics.precision_score(y,logpred)
+
+# accuracy
+metrics.accuracy_score(y, logpred)
