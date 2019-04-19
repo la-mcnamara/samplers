@@ -19,6 +19,8 @@ from sklearn import linear_model
 import statsmodels.api as sm
 from sklearn.feature_selection import RFE
 from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
 from sklearn import metrics
 
 # set working directory
@@ -47,7 +49,7 @@ versicolor = iris[iris['species']=='versicolor']
 virginica = iris[iris['species']=='virginica']
 
 
-##############  Reconfigure Data  ##############
+##############  Prep Data  ##############
 
 # add dummy variables for species
 dummies = pd.get_dummies(iris.species)
@@ -55,6 +57,7 @@ iris = iris.join(dummies)
 
 
 ##############  Visualize Data  ##############
+sns.set_style()
 # bee swarm plots
 def beeswarm(var, label):
     sns.swarmplot(x='species', y=var, data=iris) 
@@ -133,3 +136,43 @@ metrics.precision_score(y,logpred)
 
 # accuracy
 metrics.accuracy_score(y, logpred)
+
+##############  Random Forest  ##############
+Xrf=iris[['sepal_length', 'sepal_width', 'petal_length', 'petal_width']]  # Features
+yrf=iris['species']  # Labels
+
+# Split dataset into training set (75%) and test set (25%)
+Xrf_train, Xrf_test, yrf_train, yrf_test = train_test_split(Xrf, yrf, test_size=0.25) 
+
+# test model for different numbers of trees
+n_est_array = [1,10,100,1000,10000]
+
+for i in n_est_array:
+
+    #Create a Gaussian Classifier
+    clf=RandomForestClassifier(n_estimators=i)
+
+    #Train the model using the training sets y_pred=clf.predict(X_test)
+    clf.fit(Xrf_train,yrf_train)
+
+    #Test the prediction
+    rfpred = pd.Series(clf.predict(Xrf_test))
+
+    # auc does not apply to multiclass prediction
+
+    # precision
+    prec_mic = metrics.precision_score(yrf_test, rfpred, average='micro')
+    prec_mac = metrics.precision_score(yrf_test, rfpred, average='macro')
+
+    # accuracy
+    acc = metrics.accuracy_score(yrf_test, rfpred)
+
+    # output
+    print("For n_estimators = %d" % (i))
+    print("Precision micro = %0.4f" % (prec_mic))
+    print("Precision macro = %0.4f" % (prec_mac))
+    print("Accuracy = %0.4f" % (acc))
+
+feature_imp = pd.Series(clf.feature_importances_,index=Xrf.columns.tolist()).sort_values(ascending=False)
+feature_imp
+# sepal width is least important, which mirrors the logistic regression results
