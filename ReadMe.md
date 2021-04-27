@@ -4,7 +4,7 @@
 This notebook analyzes the Kaggle heart failure dataset here:
 https://www.kaggle.com/andrewmvd/heart-failure-clinical-data?select=heart_failure_clinical_records_dataset.csv
 
-This analysis fits various machine learning models to the dataset (logistic regression, random forest, xgboost) and explores which of these maximizes model performance metrics.
+This analysis fits various machine learning models to the dataset (logistic regression, random forest, xgboost) and uses cross-validation to explore which of these maximizes model performance metrics.
 
 ## ML_Sampler.py
 This script analyzes the classic iris dataset as follows: 
