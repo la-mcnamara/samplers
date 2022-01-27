@@ -15,4 +15,5 @@ This script analyzes the classic iris dataset as follows:
 The data is sourced from: https://gist.githubusercontent.com/curran/a08a1080b88344b0c8a7/raw/d546eaee765268bf2f487608c537c05e22e4b221/iris.csv
 
 ## ParameterTuning_Hyperopt.ipynb
-This notebook will study using hyperopt and Bayesian optimization to do hyperparameter tuning.
+This notebook studies using hyperopt and random search to do hyperparameter tuning on a catboost model.
+The data is Kaggle's board game geek dataset: https://www.kaggle.com/mrpantherson/board-game-data
